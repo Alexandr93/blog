@@ -6,6 +6,8 @@ namespace Framework;
  * Date: 12.09.15
  * Time: 17:29
  */
+use Framework\Response\Response;
+use Framework\Router\Router;
 
 /**
  * Class Application
@@ -13,15 +15,37 @@ namespace Framework;
  */
 class Application
 {
+
+    protected $config;
+    protected $request;
     /**
      * главный метод класа
-     * @param $path для вытаскивания конфигов
+     * @param $config для вытаскивания конфигов
      */
-    public function __construct($path)
+    public function __construct($configFile)
     {
-        return "Class ".$path;
+        $this->config = include($configFile);
     }
     public function run(){
-        return "Hi, I am class Application";
+        //принимает карту маршрутов
+        $routes=$this->config['routes'];
+        $route=new Router($routes);
+
+        //define controller
+
+
+        //$controller=new stdClass();
+        //$response=$controller->action();
+        //if($response instanceof ResponseInterface){
+        //if($response->type=='html')
+        //{
+        //$renderer=new Renderer();
+        //$wrapped->render()$mail_layout, array('content'=>$response->getContent());
+        //$response=new Response($wrapped);
+        //}
+        //}else{
+        //throw BadResponse.....
+        //}
+        //$response->send();
     }
 }

@@ -10,6 +10,6 @@ $loader->addNamespacePath('Framework\\',__DIR__.'/../framework');
 
 
 $app = new \Framework\Application(__DIR__.'/../app/config/config.php');
-print_r($app);
+
 
 echo $app->run();
