@@ -11,5 +11,19 @@ namespace Framework\Request;
 
 class Request
 {
+   public function __construct(){
+
+   }
+
+    public function isPost()
+    {
+        return true;
+    }
+    public function get(){
+
+    }
+    public function post(){
+        return true;
+    }
 
 }

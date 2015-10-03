@@ -30,6 +30,7 @@ class PostController extends Controller
         return new Response('Post: #'.$id);
     }
 
+
     public function addAction()
     {
         if ($this->getRequest()->isPost()) {

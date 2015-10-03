@@ -11,8 +11,8 @@ namespace Framework\Response;
 
 class JsonResponse
 {
-    public $type='json';
-    function send(){
+        public $type='json';
+        function send(){
 
     }
 }
