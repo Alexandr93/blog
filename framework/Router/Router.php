@@ -26,38 +26,11 @@ class Router
 
     }
 
-    protected function patternToRegexp($reg, $pattern=array()){
-
-        if(!empty($pattern)){
-            foreach($pattern as $key => $subpattern){
-                $pattern=str_replace('{'.$key.'}', $subpattern, $pattern);
-            }
-        }
-
-        $pattern=preg_replace('~\{[\w\d_]Ui+\}~', '~[\d]+~', $pattern);
-
-        $regexp='/^'.$pattern.'$~i';
-
-        return $regexp;
-    }
+   
     public function testUri(){
         return $this->parseUri($this->map);
     }
-    public function findRoute($uri){
 
-        $match_route=null;
-
-        if(!empty($this->map)){
-            foreach($this->map as $route){
-                $pattern=$this->patternToRegexp($this->map['pattern']);
-
-                if(preg_match($pattern, $uri)){
-                    $match_route=$route;
-            }
-            }
-        }
-        return $this->map['pattern'];
-    }
 
 
     public function parseUri($map_array){
