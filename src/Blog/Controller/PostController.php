@@ -65,5 +65,7 @@ class PostController extends Controller
             throw new HttpNotFoundException('Page Not Found!');
         }
         return $this->render('show.html', array('post' => $post));
+        //$idd=$id;
+        //return $idd;
     }
 }

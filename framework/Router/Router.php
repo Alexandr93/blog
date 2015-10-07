@@ -26,7 +26,7 @@ class Router
 
     }
 
-   
+
     public function testUri(){
         return $this->parseUri($this->map);
     }
@@ -51,9 +51,10 @@ class Router
                     $this->security = isset($routeValue['security']) ? $routeValue['security'] : NULL;
 
                     $mach_route = $map_array[$route];
+                    $mach_route['_name']=$route;
                     if (!empty($match[1]))
                         $mach_route['id_value'] = $match[1];//вытаскиваем значение поля id
-                    $this->msg = $mach_route;
+
                     return $mach_route;
                 }
 

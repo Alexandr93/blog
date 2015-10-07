@@ -6,6 +6,8 @@ namespace Framework;
  * Date: 12.09.15
  * Time: 17:29
  */
+use Framework\DI\Service;
+use Framework\Request\Request;
 use Framework\Response\Response;
 use Framework\Router\Router;
 
@@ -17,7 +19,8 @@ class Application
 {
 
     protected $config;
-    protected $request='/test_redirect';//потом будем получать с реквеста
+    protected $request;//'/test_redirect';//потом будем получать с реквеста
+
     /**
      * главный метод класа
      * @param $config для вытаскивания конфигов
@@ -26,16 +29,37 @@ class Application
     {
         $this->config = include($configFile);
 
+        //Service::set('route', new Router('/test_redirect', $this->config['routes']));
+        $this->request=$_SERVER['REQUEST_URI'];
+        Service::set('route', new Router($this->request, $this->config['routes']));
+        Service::set('request', new Request());
+
     }
+
+
     public function run(){
         //принимает карту маршрутов
 
-       $route=new Router($this->request, $this->config['routes']);
+       $route=Service::get('route');
         $routes=$route->testUri();
-        $StdClass=$routes['controller'];
-        $controller=new $StdClass();
+        if(!empty($routes)) {
+            if(class_exists($routes['controller'])) {
+                //$StdClass = ;
+                $controller = $routes['controller'];
 
-      return  get_class_methods($controller);
+                $action = $routes['action'] . 'Action';
+                $ctrlReflection=new \ReflectionMethod($controller, $action);
+
+                $response=$ctrlReflection->invokeArgs(new $controller, (isset($routes['id_value'])) ? $routes['id_value']:[]);
+                $s=$response->send();
+
+
+
+            }
+        }
+        return $response;
+
+     // return  get_class_methods($controller);
         // $route->parseUri('/');//принимает текущий uri
         //define controller
 

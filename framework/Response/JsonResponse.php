@@ -9,10 +9,13 @@
 namespace Framework\Response;
 
 
-class JsonResponse
+class JsonResponse implements ResponseInterface
 {
+       public function __construct(){
+
+       }
         public $type='json';
-        function send(){
+        public function send(){
 
     }
 }

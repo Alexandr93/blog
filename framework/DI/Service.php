@@ -37,6 +37,6 @@ class Service
     }
 
     public static function get($service_name){
-        return empty(self::$services[$service_name]? null : self::$services[$service_name]);
+        return array_key_exists($service_name, self::$services)? self::$services[$service_name] :null;
     }
 }

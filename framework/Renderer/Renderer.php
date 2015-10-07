@@ -19,10 +19,14 @@ class Renderer
         //Set inner vars
     }
     public function render(){
+       $include=function(){};
+
         ob_start();
         extract($this->data);
         include($this->layout);
         return ob_get_clean();
     }
+    public function assign(){
 
+    }
 }
