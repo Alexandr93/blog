@@ -9,6 +9,7 @@ namespace Framework;
 use Framework\DI\Service;
 use Framework\Request\Request;
 use Framework\Response\Response;
+use Framework\Response\ResponseInterface;
 use Framework\Router\Router;
 
 /**
@@ -51,13 +52,26 @@ class Application
                 $ctrlReflection=new \ReflectionMethod($controller, $action);
 
                 $response=$ctrlReflection->invokeArgs(new $controller, (isset($routes['id_value'])) ? $routes['id_value']:[]);
-                $s=$response->send();
+                if($response instanceof ResponseInterface){
+                  /* if($response->type =='html') {
+
+                       return 'fsfsdfs';
+                   }*/
+
+
+                    $send= $response->send();
+                if($response->type=='json'){
+
+                    $send=$send['body'];
+                }
+                }
+                //else{ throw BadResponse();}
 
 
 
             }
         }
-        return $response;
+        return $send;
 
      // return  get_class_methods($controller);
         // $route->parseUri('/');//принимает текущий uri

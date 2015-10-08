@@ -26,6 +26,6 @@ class ResponseRedirect implements ResponseInterface
         header('Referer: '.$request->fullUri());
         header('Location: '.$this->url, $this->replace, $this->code);
         //exit();
-        return $this->url;
+        return $request->fullUri();
     }
 }

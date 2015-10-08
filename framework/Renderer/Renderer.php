@@ -12,13 +12,9 @@ namespace Framework\Renderer;
 class Renderer
 {
 
-    protected $layout;
-    protected $data=array();
     
-    public function __construct($view, $data){
-        //Set inner vars
-    }
-    public function render(){
+
+    public function render($layout, $data){
        $include=function(){};
 
         ob_start();

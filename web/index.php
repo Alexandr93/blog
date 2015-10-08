@@ -11,7 +11,7 @@ $loader->addNamespacePath('Framework\\',__DIR__.'/../framework');
 
 $app = new \Framework\Application(__DIR__.'/../app/config/config.php');
 
-//echo $_SERVER['REQUEST_URI'];
+
 
 print_r($app->run());
 //echo $app->run();
