@@ -17,10 +17,7 @@ class Loader{
     }
 
 
-    /**
-     *  пустой метод __clone, закрываем доступ вне класса
-     */
-    private function __clone(){}
+
 
     public static function getInstance()
     {
@@ -29,7 +26,10 @@ class Loader{
         }
         return self::$_instance;
     }
-
+    /**
+     *  пустой метод __clone, закрываем доступ вне класса
+     */
+    private function __clone(){}
     /**
      * добавление пути
      * принимает на вход 2 параметра
@@ -68,27 +68,15 @@ class Loader{
 
         $prefix = $class;
 
-        // для определения имени файла обходим пространства имён из абсолютного
-        // имени класса в обратном порядке
         while (false !== $pos = strrpos($prefix, '\\')) {
-
-            // сохраняем завершающий разделитель пространства имён в префиксе
             $prefix = substr($class, 0, $pos + 1);
-
-            // всё оставшееся — относительное имя класса
             $relative_class = substr($class, $pos + 1);
-
-            // пробуем загрузить соответсвующий префиксу и относительному имени класса файл
             $mapped_file = self::loadMappedFile($prefix, $relative_class);
             if ($mapped_file) {
                 return $mapped_file;
             }
-
-            // убираем завершающий разделитель пространства имён для следующей итерации strrpos()
             $prefix = rtrim($prefix, '\\');
         }
-
-        // файл так и не был найден
         return false;
 
     }
@@ -100,17 +88,11 @@ class Loader{
      */
     protected static function loadMappedFile($prefix, $relative_class)
     {
-        // есть ли у этого префикса пространства имён какие-либо базовые директории?
         if (isset(self::$prefixes[$prefix]) === false) {
             return false;
         }
-
-        // ищем префикс в базовых директориях
         foreach (self::$prefixes[$prefix] as $base_dir) {
 
-            // заменяем префикс базовой директорией,
-            // заменяем разделители пространства имён на разделители директорий,
-            // к относительному имени класса добавляем .php
             $file = $base_dir
                 . str_replace('\\', '/', $relative_class)
                 . '.php';
@@ -121,8 +103,6 @@ class Loader{
                 return $file;
             }
         }
-
-        // файл так и не был найден
         return false;
     }
 
@@ -141,3 +121,6 @@ class Loader{
     }
 
 }
+$loader=Loader::getInstance();
+Loader::addNamespacePath("Framework\\",__DIR__);
+//$loadFunction = '\Loader::loadClass';

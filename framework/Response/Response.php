@@ -10,19 +10,22 @@ namespace Framework\Response;
 
 
 
-class Response implements ResponseInterface
+class Response extends AbstrResponse implements ResponseInterface
 {
 
-    protected $content;
-    protected $code;
-    protected $msg;
-    protected $headers;
-    protected $protocols;
-    public function __construct($content=null, $code=200, $msg='Successful'){
-        $this->content=$content;
+
+
+    public $type = 'html';
+    public function __construct($content, $code=201, $msg='Ok'){
+       parent::__construct();
         $this->code=$code;
         $this->msg=$msg;
+        $this->setContent($content);
     }
-    public function getContent(){}
-    public function send(){}
+
+    public function __toString() {
+        $result = $this->getContent();
+        return $result.'';
+    }
+
 }

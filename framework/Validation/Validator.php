@@ -11,6 +11,9 @@ namespace Framework\Validation;
 
 class Validator
 {
+    public function __construct($post){
+
+    }
     public function getErrors(){
         return true;
     }

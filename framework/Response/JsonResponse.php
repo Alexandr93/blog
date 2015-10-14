@@ -9,18 +9,15 @@
 namespace Framework\Response;
 
 
-class JsonResponse implements ResponseInterface
+class JsonResponse extends AbstrResponse
 {
 
     public $type='json';
     protected $content;
-       public function __construct($content){
-            $this->content=$content;
 
-       }
-
-        public function send(){
-
-        return $this->content;
+    public function __construct($content){
+        $this->setHeader('Content-Type: application/json');
+        $this->setContent(json_encode($content));
     }
+
 }

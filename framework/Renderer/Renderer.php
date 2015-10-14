@@ -8,21 +8,32 @@
 
 namespace Framework\Renderer;
 
-
+use Framework\DI\Service;
 class Renderer
 {
 
     
 
-    public function render($layout, $data){
-       $include=function(){};
+    public function render($path_to_layout, $data){
+       $include=function($controller, $action, $params=array()){
+           $ctrlObj=new $controller;
+           return call_user_func_array(array($ctrlObj,$action.'Action') , $params);
+       };
 
+        $getRoute = function($rout) {
+            $router = Service::get('route');
+            return $router->buildRoute($rout);
+        };
+        $generateToken=function(){};
+
+        $data['include'] = $include;
+        $data['getRoute'] = $getRoute;
+        $data['generateToken'] = $generateToken;
         ob_start();
-        extract($this->data);
-        include($this->layout);
+        extract($data);
+        //print_r($path_to_layout);
+        include($path_to_layout);
         return ob_get_clean();
     }
-    public function assign(){
 
-    }
 }
