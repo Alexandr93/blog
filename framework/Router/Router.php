@@ -51,7 +51,7 @@ class Router
                     $mach_route = $map_array[$route];
                     $mach_route['_name']=$route;
                     if (!empty($match[1])) {
-                        $mach_route['id_value'] = $match[1];//вытаскиваем значение поля id
+                        $mach_route['id'] = $match[1];//вытаскиваем значение поля id
                     }
                     $this->result=$mach_route;
                     //print_r($this->map['show_post']);

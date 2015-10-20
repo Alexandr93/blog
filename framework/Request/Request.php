@@ -54,21 +54,24 @@ class Request
         return null;
     }
     public function post($param){
-        if(array_key_exists($param, $_POST))
+        //print_r($_POST);
+        if(array_key_exists($param, $_POST)) {
+
+            if ($param == 'password') {
+                $_POST[$param]=md5($_POST[$param]);
+            }
             return $this->filter($_POST[$param]);
+        }
         return NULL;
     }
 
 
     public function filter($method){
 
-        if (strlen($method)){
-            $result = trim($method);
-            $result = preg_replace("/[^a-zа-я0-9., _\n]/i", "", $result);
-            $result = htmlspecialchars($result);
-        } else {
-            return false;
-        }
+
+            $result = $method;
+
+
         return $result;
     }
 }

@@ -37,6 +37,11 @@ class Service
     }
 
     public static function get($service_name){
-        return array_key_exists($service_name, self::$services)? self::$services[$service_name] :null;
+         if(array_key_exists($service_name, self::$services)){
+             return self::$services[$service_name];
+         }
+      /*   else {
+             throw new ServiceNotFoundExeption();
+         }*/
     }
 }

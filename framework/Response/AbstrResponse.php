@@ -14,7 +14,7 @@ abstract class AbstrResponse implements ResponseInterface
     protected $code;
     protected $headers=array();
     protected $content;
-    protected $protocol;
+    protected $protoco='1.1';
     protected $responseStatus;
     protected $msg;
     public function __construct(){

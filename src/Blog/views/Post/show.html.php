@@ -7,5 +7,5 @@ $date->setTimestamp(strtotime($post->date));
     <h1><?php echo $post->title ?></h1>
 
     <p class="small"><?php echo $date->format('F j, Y H:i:s') ?></p>
-    <?php echo htmlspecialchars_decode($post->content) ?>
+    <?php echo htmlspecialchars_decode($post->content);// print_r($_SESSION['query']); ?>
 </div>

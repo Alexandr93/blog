@@ -39,7 +39,9 @@ abstract class Controller
         return Service::get('request');
 
     }
-    public function redirect($url, $msg='Hello, redirect'){
+    public function redirect($url, $msg=null){
+        $ses=Service::get('session');
+        $ses->addFlushMessage('successful', $msg);
         return new ResponseRedirect($url);
     }
 

@@ -16,14 +16,15 @@ class ResponseRedirect extends AbstrResponse
     protected $code;
     protected $url;
     protected $replace;
-
-    public function __construct($url, $replace=true, $code=301, $msg='Ok'){
+    //public $type='html';
+    public function __construct($url){
         parent::__construct();
-        $this->code=$code;
+        $this->code=301;
         $this->url=$url;
         $request=Service::get('request');
         $this->setHeader('Referer: '.$request->fullUri());
-        $this->setHeader('Location: '.$this->url, true, $this->code);;
+        $this->setHeader('Location: '.$this->url, true, $this->code);
+
     }
     public function send(){
        /* $request=Service::get('request');

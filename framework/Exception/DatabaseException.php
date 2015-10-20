@@ -11,7 +11,5 @@ namespace Framework\Exception;
 
 class DatabaseException extends \Exception
 {
-    public function getMessage(){
 
-    }
 }

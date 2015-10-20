@@ -1,18 +1,15 @@
 <?php if (!isset($errors)) {
     $errors = array();
 }
-
 $getValidationClass = function ($field) use ($errors) {
     return isset($errors[$field])?'has-error has-feedback':'';
 };
-
 $getErrorBody = function ($field) use ($errors){
-  if (isset($errors[$field])){
-      return '<span class="glyphicon glyphicon-remove form-control-feedback"></span><span class="pull-right small form-error">'.$errors[$field].'</span>';
-  }
+    if (isset($errors[$field])){
+        return '<span class="glyphicon glyphicon-remove form-control-feedback"></span><span class="pull-right small form-error">'.$errors[$field].'</span>';
+    }
     return '';
 }
-
 ?>
 
 <div class="panel panel-default">
