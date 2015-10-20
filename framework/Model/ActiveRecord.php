@@ -25,7 +25,7 @@ abstract class ActiveRecord
                 $valuesArr[] = $val;
                 $columsArr[] = $col;
 
-                //закоментировал поле $id в классе User нигде не применяется
+       
         }
             $db=Service::get('db');
             $colum='('.implode(', ', $columsArr).')';
