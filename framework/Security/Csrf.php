@@ -20,6 +20,11 @@ class Csrf
         $session->set('token', $token);
         return $token;
     }
+
+    /**
+     * check
+     * @return bool
+     */
     public function checkToken(){
         $session=Service::get('session');
         $token=null;
@@ -38,6 +43,6 @@ class Csrf
     public function checkTokenValid(){
 
         if($this->checkToken()==false)
-            throw new SecurityException('Invalid token, resend form ');
+            throw new SecurityException('Invalid token, resend form ', Service::get('session')->returnUrl);
     }
 }

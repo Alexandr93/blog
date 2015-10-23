@@ -10,6 +10,7 @@ use Framework\DI\Service;
 use Framework\Exception\BadResponseException;
 use Framework\Exception\DatabaseException;
 use Framework\Exception\HttpNotFoundException;
+use Framework\Exception\SecurityException;
 use Framework\Renderer\Renderer;
 use Framework\Request\Request;
 use Framework\Response\Response;
@@ -32,10 +33,7 @@ class Application
     protected $config;
     protected $request;
     protected $pdo=[];
-    /**
-     * главный метод класа
-     * @param $config для вытаскивания конфигов
-     */
+
     public function __construct($configFile)
     {
         //
@@ -65,31 +63,28 @@ class Application
 
 
     public function run(){
-
-
-
-
-        $route=Service::get('route');
+     $route=Service::get('route');
         $routes=$route->testUri();
+   // try{
+
         if(!empty($routes['security'])) {//check authorization on security pages
             $session = Service::get('session');
             $user = $session->get('user');
             $session->setReturnUrl(Service::get('request')->getUri());
             if(is_object($user)){
                 if ($user->role == $routes['security'][0]) {}
-                else{$session->addFlushMessage('info', 'You are not allowed');
-                    $resp = new ResponseRedirect(Service::get('route')->buildRoute('home'));
-                    $resp->send();
-                    die;
+                else{
+                    throw new SecurityException('You are not allowed posts adding', Service::get('route')->buildRoute('home'));
+
                 }
             }else{
-                $session->addFlushMessage('info', 'Authorization Required');
-                $resp = new ResponseRedirect(Service::get('route')->buildRoute($this->config['security']['login_route']));
-                $resp->send();
-                die;
+                throw new SecurityException('Authorization Required', Service::get('route')->buildRoute($this->config['security']['login_route']));
+
             }
 
         }
+
+
 
 
     try{
@@ -115,28 +110,38 @@ class Application
 
             } else{
 
-                echo 'So bad';
-                 throw new BadResponseException();
+
+                 throw new HttpNotFoundException('Bad response');
 
             }
 
 
         }else{
-            //Exception controller not found
-            echo 'Вы все говно';
-            throw new ControllerNotFoundException();
+
+
+            throw new HttpNotFoundException('Controller not found');
 
         }
     }else{
         ///Exception route not found
-        throw new HttpNotFoundException;
+        throw new HttpNotFoundException('Route not found');
 
     }
     $response->send();
     }
-    catch (HttpNotFoundException $e){}
+    catch (HttpNotFoundException $e){
+        $renderer=new Renderer();
+        $response=new Response($renderer->render($this->config['error_500'],
+            array('message'=>$e->getMessage(). ' on file: '.$e->getFile(). ' at line: '.$e->getLine(),'code'=>404 ,
+                ))
+        );
+    $response->send();
+    }
+
+
     catch(DatabaseException $e){}
     catch(BadResponseException $e){}
+    catch(SecurityException $e){}
 
 
     }
