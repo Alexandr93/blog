@@ -8,17 +8,48 @@
 
 namespace Framework\Validation;
 
+use Framework\Model\ActiveRecord;
+use Framework\Exception\ValidationException;
 
 class Validator
 {
-    public function __construct($post){
+    protected $errors = NULL;
+    protected $rules;
+    protected $objVars;
+    /**
+     * @param $post
+     */
+    public function __construct($post)
+    {
+
+                $this->rules = $post->getRules();
+                $this->objVars = get_object_vars($post);
 
     }
-    public function getErrors(){
-        return true;
+    /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        foreach($this->rules as $name => $filters)
+        {
+            foreach($filters as $filter)
+            {
+                $result = $filter->check($this->objVars[$name]);
+                if(is_array($result))
+                {
+                    $this->errors[$name] = 'Error, '.$name.' '.$result['error'];
+                }
+            }
+        }
+        return ($this->errors == NULL);
+    }
+    /**
+     * @return null
+     */
+    public function getErrors()
+    {
+        return $this->errors;
     }
 
-    public function isValid(){
-        return true;
-    }
 }

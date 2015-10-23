@@ -16,7 +16,7 @@ class Response extends AbstrResponse implements ResponseInterface
 
 
     public $type = 'html';
-    public function __construct($content, $code=201, $msg='Ok'){
+    public function __construct($content, $code=200, $msg='Ok'){
        parent::__construct();
         $this->code=$code;
         $this->msg=$msg;

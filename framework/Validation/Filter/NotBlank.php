@@ -11,5 +11,8 @@ namespace Framework\Validation\Filter;
 
 class NotBlank
 {
-
+    public function check($param)
+    {
+        return (strlen($param) == 0) ? ['error' => 'it must not be empty'] : true;
+    }
 }

@@ -22,7 +22,6 @@ class Security
 
 
     }
-
     public function isAuthenticated(){
        return Service::get('session')->get('isAuth')?true : false;
 

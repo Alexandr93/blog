@@ -122,5 +122,5 @@ class Loader{
 
 }
 $loader=Loader::getInstance();
-Loader::addNamespacePath("Framework\\",__DIR__);
+$loader::addNamespacePath("Framework\\",__DIR__);
 //$loadFunction = '\Loader::loadClass';

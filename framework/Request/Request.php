@@ -9,6 +9,10 @@
 namespace Framework\Request;
 
 
+use Framework\Controller\Controller;
+use Framework\DI\Service;
+use Framework\Response\ResponseRedirect;
+
 class Request
 {
 
@@ -56,11 +60,13 @@ class Request
     public function post($param){
         //print_r($_POST);
         if(array_key_exists($param, $_POST)) {
-
             if ($param == 'password') {
-                $_POST[$param]=md5($_POST[$param]);
+                $_POST[$param]=md5($_POST[$param]);//шифрация пароля
             }
+            Service::get('csrf')->checkTokenValid();
+
             return $this->filter($_POST[$param]);
+
         }
         return NULL;
     }

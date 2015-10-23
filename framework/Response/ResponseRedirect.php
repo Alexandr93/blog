@@ -27,12 +27,12 @@ class ResponseRedirect extends AbstrResponse
 
     }
     public function send(){
-       /* $request=Service::get('request');
-        //$this->setHeader('Referrer: '.$request->fullUri());
-        header('HTTP/1.1 '.$this->code, $this->replace, $this->msg);
-        header('Location: '.$this->url, $this->replace, $this->code);
+        $request=Service::get('request');
+        $this->setHeader('Referrer: '.$request->fullUri());
+       // header('HTTP/1.1 '.$this->code, $this->replace, $this->msg);
+       // header('Location: '.$this->url, $this->replace, $this->code);
         //echo $this->getContent();
-        //header(implode("\n", $this->headers));*/
+        //header(implode("\n", $this->headers));
 
 
 

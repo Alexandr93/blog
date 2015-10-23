@@ -56,7 +56,7 @@ class Router
                     $this->result=$mach_route;
                     //print_r($this->map['show_post']);
                    // echo 'gdfgd';
-
+                       // print_r($this->map);
                     return $mach_route;
                 }
 
@@ -73,7 +73,10 @@ class Router
     }
 
     public function buildRoute($route){
-        $rout_params = $this->map[$route];
-        return $rout_params['pattern'];
+       if(array_key_exists($route, $this->map)){
+           $rout_params = $this->map[$route];
+           return $rout_params['pattern'];
+       }
+        return null;
     }
 }

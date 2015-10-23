@@ -25,7 +25,7 @@ abstract class ActiveRecord
                 $valuesArr[] = $val;
                 $columsArr[] = $col;
 
-       
+
         }
             $db=Service::get('db');
             $colum='('.implode(', ', $columsArr).')';
@@ -33,7 +33,7 @@ abstract class ActiveRecord
             $query='INSERT INTO `'.static::getTable().'` '.$colum.' VALUES '.$values;
             //$query='INSERT INTO users (email, password, role) VALUES ("va11sa@mail.ru", "13", "ROLE_USER")';
 
-            //$db->query($query);
+           // $db->query($query);
             print_r($query);
 
 
@@ -53,6 +53,25 @@ abstract class ActiveRecord
         $stmt->execute([':id' => $id]);
         $result = ($id == 'all') ? $stmt->fetchAll(\PDO::FETCH_OBJ) : $stmt->fetch(\PDO::FETCH_OBJ);
         return $result;
+    }
+    public function update(){
+        $fields=get_object_vars($this);//переменные с внесенными значениями для сохранения
+        print_r($fields);
+        $valuesArr=array();
+        $columsArr=array();//Get column names for $table
+        foreach($fields as $col=>$val) {
+
+            $valuesArr[] = $val;
+            $columsArr[] = $col;
+        }
+        $db=Service::get('db');
+        $colum='('.implode(', ', $columsArr).')';
+        $values='("'.implode('", "', $valuesArr).'")';
+        $query='UPDATE INTO `'.static::getTable().'` '.$colum.' VALUES '.$values.' WHERE email="'.$valuesArr['email'];
+        //$query='INSERT INTO users (email, password, role) VALUES ("va11sa@mail.ru", "13", "ROLE_USER")';
+
+        // $db->query($query);
+        print_r($query);
     }
 
     public static function findByEmail($email){

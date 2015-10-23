@@ -9,9 +9,11 @@
 namespace Framework\Controller;
 use Framework\DI\Service;
 
+use Framework\Request\Request;
 use Framework\Response\Response;
 use Framework\Response\ResponseRedirect;
 use Framework\Renderer\Renderer;
+use Framework\Router\Router;
 
 /**
  * Class Controller
@@ -21,6 +23,12 @@ use Framework\Renderer\Renderer;
 abstract class Controller
 {
 
+    /**
+     * remake of the name name to full path for this views
+     * @param $layout
+     * @param array $data
+     * @return Response
+     */
     public function render($layout, $data=array()){
 
         $ctrl_class=get_class($this);
@@ -35,19 +43,33 @@ abstract class Controller
         return $resp;
 
     }
+
+    /**
+     * get Request object
+     * @return Request
+     */
     public function getRequest(){
         return Service::get('request');
 
     }
-    public function redirect($url, $msg=null){
+
+    /**
+     * redirect with url, and set Flush message to the session
+     * @param $url
+     * @param null $msg
+     * @param string $type
+     * @return ResponseRedirect
+     */
+    public function redirect($url, $msg=null, $type='success'){
         $ses=Service::get('session');
-        $ses->addFlushMessage('successful', $msg);
+        $ses->addFlushMessage($type, $msg);
         return new ResponseRedirect($url);
     }
 
     /**
+     * take url with $name in the Router
      * @param $name
-     * @return mixed получаем значение pattern с именем $name
+     * @return Router
      */
     public function generateRoute($name){
         $router=Service::get('route');
