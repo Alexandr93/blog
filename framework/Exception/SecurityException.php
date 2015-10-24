@@ -14,10 +14,11 @@ use Framework\Response\ResponseRedirect;
 
 class SecurityException extends \Exception
 {
-        public function __construct($msg, $url){
+        public function __construct($msg, $url, $code=301){
             $session=Service::get('session');
+            $session->setReturnUrl(Service::get('request')->getUri());
             $session->addFlushMessage('info', $msg);
-            $resp = new ResponseRedirect($url);
+            $resp = new ResponseRedirect($url, $code);
             $resp->send();
             //return  $resp;
 

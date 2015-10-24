@@ -28,21 +28,26 @@ class Csrf
     public function checkToken(){
         $session=Service::get('session');
         $token=null;
-        if(isset($_REQUEST['token'])){
-            $token=$_REQUEST['token'];
+        if(isset($_POST['token'])){
+            $token=$_POST['token'];
 
         }
         if($token!=null){
             $sesTokenValue=$session->get('token');
-           // $session->delete('token');
+
+
             return $sesTokenValue==$token ? true : false;
         }else{
             return true;
         }
+
     }
     public function checkTokenValid(){
 
-        if($this->checkToken()==false)
-            throw new SecurityException('Invalid token, resend form ', Service::get('session')->returnUrl);
+        if($this->checkToken()==false) {
+            $session = Service::get('session');
+            //$session->delete('token');
+            throw new SecurityException('Invalid token, resend form ', $_SERVER['HTTP_REFERER']);
+        }
     }
 }

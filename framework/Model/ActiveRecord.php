@@ -8,80 +8,92 @@
  */
 namespace Framework\Model;
 
+
 use Framework\DI\Service;
 
 abstract class ActiveRecord
 {
 
 
-    public function save(){
-
-        $fields=get_object_vars($this);//переменные с внесенными значениями для сохранения
-
-        $valuesArr=array();
-        $columsArr=array();//Get column names for $table
-        foreach($fields as $col=>$val) {
-
-                $valuesArr[] = $val;
-                $columsArr[] = $col;
-
-
+    /**
+     *  save data from the form
+     */
+    public function save()
+    {
+        $fields = get_object_vars($this);
+        $columns = '';
+        $values = '';
+        foreach ($fields as $col => $val) {
+            $columns .= $col . ', ';
+            $values .= '"' . $val . '", ';
         }
-            $db=Service::get('db');
-            $colum='('.implode(', ', $columsArr).')';
-            $values='("'.implode('", "', $valuesArr).'")';
-            $query='INSERT INTO `'.static::getTable().'` '.$colum.' VALUES '.$values;
-            //$query='INSERT INTO users (email, password, role) VALUES ("va11sa@mail.ru", "13", "ROLE_USER")';
+        $columns = '(' . substr($columns, 0, -2) . ')';
+        $values = '(' . substr($values, 0, -2) . ')';
+        $db = Service::get('db');
+        $query = 'INSERT INTO `' . static::getTable() . '` ' . $columns . ' VALUES ' . $values;
+        $db->query($query);
+    }
 
-           // $db->query($query);
-            print_r($query);
+    public static function getTable()
+    {
 
 
     }
-    public static function getTable(){
 
+    /**
+     * find record by id
+     * @param $id
+     * @return mixed
+     */
+    public static function find($id)
+    {
 
-    }
-    public static function find($id){
-
-        $db =Service::get('db');
-        $query = 'SELECT * FROM '.static::getTable();
-        if(gettype($id)=='integer'){
-            $query.=' WHERE id = :id';
+        $db = Service::get('db');
+        $query = 'SELECT * FROM ' . static::getTable();
+        if (gettype($id) == 'integer') {
+            $query .= ' WHERE id = :id';
         }
         $stmt = $db->prepare($query);
         $stmt->execute([':id' => $id]);
         $result = ($id == 'all') ? $stmt->fetchAll(\PDO::FETCH_OBJ) : $stmt->fetch(\PDO::FETCH_OBJ);
         return $result;
     }
-    public function update(){
-        $fields=get_object_vars($this);//переменные с внесенными значениями для сохранения
-        print_r($fields);
-        $valuesArr=array();
-        $columsArr=array();//Get column names for $table
-        foreach($fields as $col=>$val) {
 
-            $valuesArr[] = $val;
-            $columsArr[] = $col;
+    /**
+     * update table
+     * @param $field
+     * @param $fieldValue
+     */
+    public function update($field, $fieldValue)
+    {
+        $fields = get_object_vars($this);
+        $query = '';
+        foreach ($fields as $col => $val) {
+            $query .= $col . '="' . $val . '", ';
         }
-        $db=Service::get('db');
-        $colum='('.implode(', ', $columsArr).')';
-        $values='("'.implode('", "', $valuesArr).'")';
-        $query='UPDATE INTO `'.static::getTable().'` '.$colum.' VALUES '.$values.' WHERE email="'.$valuesArr['email'];
-        //$query='INSERT INTO users (email, password, role) VALUES ("va11sa@mail.ru", "13", "ROLE_USER")';
+        $query = trim($query);
+        $query = substr($query, 0, -1);
+        $db = Service::get('db');
+        $query = 'UPDATE `' . static::getTable() . '` SET ' . $query . ' WHERE ' . $field . '=:fieldValue';
+        $stmt = $db->prepare($query);
+        $stmt->execute([':fieldValue' => $fieldValue]);
 
-        // $db->query($query);
-        print_r($query);
+
     }
 
-    public static function findByEmail($email){
-
-        $email=htmlspecialchars_decode($email);
-        $db=Service::get('db');
+    /**
+     * Find in db by email
+     * @param $email
+     * @return mixed
+     */
+    public static function findByEmail($email)
+    {
+        $email = htmlspecialchars_decode($email);
+        $db = Service::get('db');
         $query = 'SELECT * FROM ' . static::getTable() . ' WHERE email = :email';
-        $stmt=$db->prepare($query);
+        $stmt = $db->prepare($query);
         $stmt->execute([':email' => $email]);
-        $result=$stmt->fetch(\PDO::FETCH_OBJ);
+        $result = $stmt->fetch(\PDO::FETCH_OBJ);
         return $result;
     }
 }

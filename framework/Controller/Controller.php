@@ -33,8 +33,9 @@ abstract class Controller
 
         $ctrl_class=get_class($this);
         $ctrl_namespace=explode('\\', $ctrl_class);
-         $ctrl_name=str_replace('Controller', '', array_pop($ctrl_namespace));
-        $path_to_layout=__DIR__.'/../../src/Blog/views/'.$ctrl_name.'/'.$layout.'.php';
+        $bundle=array_shift($ctrl_namespace);
+        $ctrl_name=str_replace('Controller', '', array_pop($ctrl_namespace));
+        $path_to_layout=__DIR__.'/../../src/'.$bundle.'/views/'.$ctrl_name.'/'.$layout.'.php';
 
         $renderer=new Renderer();
         $resp=new Response($renderer->render($path_to_layout, $data));

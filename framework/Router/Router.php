@@ -13,17 +13,14 @@ class Router
 {
 
    protected $map=array();
-    //protected $pattern;
-    //protected $controller;
-    //protected $action;
     protected $method;
-    protected $uri;//в будущем будем получать с реквеста
+    protected $uri;
     protected $security;
     public $result=array();
     function __construct($requestUri, $routing_map){
         $this->map=$routing_map;
         $this->uri=$requestUri;
-        //$this->parseUri($this->map);
+
 
     }
 
@@ -40,7 +37,6 @@ class Router
 
         rtrim($testUri, '/');
         foreach($map_array as $route=>$routeValue){
-
                 $requirements =isset($routeValue['_requirements'])?$routeValue['_requirements']:NULL;
                 $pattern=preg_replace('~\{\w+\}~', isset($requirements['id']) ?'('.$requirements['id'].')':'[\w\d]+',
                     $routeValue['pattern']);
@@ -54,9 +50,6 @@ class Router
                         $mach_route['id'] = $match[1];//вытаскиваем значение поля id
                     }
                     $this->result=$mach_route;
-                    //print_r($this->map['show_post']);
-                   // echo 'gdfgd';
-                       // print_r($this->map);
                     return $mach_route;
                 }
 

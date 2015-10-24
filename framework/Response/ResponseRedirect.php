@@ -17,9 +17,9 @@ class ResponseRedirect extends AbstrResponse
     protected $url;
     protected $replace;
     //public $type='html';
-    public function __construct($url){
+    public function __construct($url, $code=301){
         parent::__construct();
-        $this->code=301;
+        $this->code=$code;
         $this->url=$url;
         $request=Service::get('request');
         $this->setHeader('Referer: '.$request->fullUri());

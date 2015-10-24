@@ -18,10 +18,11 @@ class Session
 
     public function __construct(){
     $this->start();
-    if(!isset($_SESSION['returnUrl'])){
-        $this->setReturnUrl($_SERVER['HTTP_REFERER']);
-    }
+    if(isset($_SESSION['returnUrl'])){
+       // $this->setReturnUrl(isset($_SERVER['HTTP_REFERER']));
         $this->returnUrl = $_SESSION['returnUrl'];
+    }
+
 
     }
 

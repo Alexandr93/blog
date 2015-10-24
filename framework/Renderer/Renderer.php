@@ -17,31 +17,30 @@ class Renderer
 
     public function render($path_to_layout, $content){
 
-         $include=function($controller, $action, $params=array()){
+        $include = function ($controller, $action, $params = array()) {
 
-          $app= Service::get('app');
-                $app->generateResponseCtrl($controller, $action, $params);
+            $app = Service::get('app');
+            $app->generateResponseCtrl($controller, $action, $params);
 
-         };
-        $user=Service::get('session')->get('user');//массив
+        };
+        $user = Service::get('session')->get('user');//массив
 
-       //$flush = array();
-        $router=Service::get('route');
-       $getRoute = function($rout) use (&$router) {
+        $router = Service::get('route');
+        $getRoute = function ($rout) use (&$router) {
 
             return $router->buildRoute($rout);
         };
-        $generateToken=function(){
+        $generateToken = function () {
 
-            $session=Service::get('session');
+            $session = Service::get('session');
             $csrf=Service::get('csrf');
-
-            echo '<input type="hidden" name="token" value="'.$csrf->generateToken().'" />';
+            $token=$csrf->generateToken();
+            echo '<input type="hidden" name="token" value="' . $token . '" />';
 
         };
 
         ob_start();
-        if(is_array($content)){
+        if (is_array($content)) {
             extract($content);
         }
 
