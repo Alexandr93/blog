@@ -63,7 +63,7 @@ class Application
             $session = Service::get('session');
             $user = $session->get('user');
             if (!empty($user)) {
-                if ($user->role == $routes['security'][0]) {
+                if ($user->role == 'ROLE_ADMIN') {
                 } else {
                     throw new SecurityException('You are not allowed posts adding', Service::get('route')->buildRoute('home'));
                 }
@@ -108,7 +108,6 @@ class Application
             );
             $response->send();
         } catch (DatabaseException $e) {
-        } catch (BadResponseException $e) {
         } catch (SecurityException $e) {
         }
 

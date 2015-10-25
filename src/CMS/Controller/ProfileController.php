@@ -53,7 +53,7 @@ class ProfileController extends Controller
         } else {
             throw new SecurityException('Please, login', $route->buildRoute('login'));
         }
-        //
+
     }
 
     public function getAction()

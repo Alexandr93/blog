@@ -36,11 +36,8 @@ abstract class Controller
         $bundle=array_shift($ctrl_namespace);
         $ctrl_name=str_replace('Controller', '', array_pop($ctrl_namespace));
         $path_to_layout=__DIR__.'/../../src/'.$bundle.'/views/'.$ctrl_name.'/'.$layout.'.php';
-
         $renderer=new Renderer();
         $resp=new Response($renderer->render($path_to_layout, $data));
-       // print_r($resp);
-
         return $resp;
 
     }

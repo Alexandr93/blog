@@ -8,4 +8,5 @@ $date->setTimestamp(strtotime($post->date));
 
     <p class="small"><?php echo $date->format('F j, Y H:i:s') ?></p>
     <?php echo htmlspecialchars_decode($post->content);?>
+
 </div>
