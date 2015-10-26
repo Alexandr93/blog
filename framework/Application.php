@@ -107,8 +107,6 @@ class Application
                 ))
             );
             $response->send();
-        } catch (DatabaseException $e) {
-        } catch (SecurityException $e) {
         }
 
     }

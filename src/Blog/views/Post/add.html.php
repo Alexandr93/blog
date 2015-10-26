@@ -22,11 +22,12 @@ $getErrorBody = function ($field) use ($errors){
     </div>
     <div class="panel-body">
 
-        <?php if (isset($error) && !is_array($error)) { ?>
+        <?php if (isset($errors) && !is_array($errors)) { //была ошибка неправильно названная
+        // переменная $error вместо $errors?>
             <div class="alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span></button>
-                <strong>Error!</strong> <?php echo $error ?>
+                <strong>Error!</strong> <?php echo $errors ?>
             </div>
         <?php } ?>
 

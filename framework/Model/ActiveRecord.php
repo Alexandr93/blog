@@ -10,6 +10,7 @@ namespace Framework\Model;
 
 
 use Framework\DI\Service;
+use Framework\Exception\DatabaseException;
 
 abstract class ActiveRecord
 {
@@ -23,15 +24,21 @@ abstract class ActiveRecord
         $fields = get_object_vars($this);
         $columns = '';
         $values = '';
+        $querValues=array();
         foreach ($fields as $col => $val) {
             $columns .= $col . ', ';
-            $values .= '"' . $val . '", ';
+            $values .= ':' . $col . ', ';
+            $querValues[':'.$col]=$val;
         }
         $columns = '(' . substr($columns, 0, -2) . ')';
         $values = '(' . substr($values, 0, -2) . ')';
         $db = Service::get('db');
         $query = 'INSERT INTO `' . static::getTable() . '` ' . $columns . ' VALUES ' . $values;
-        $db->query($query);
+        $stmt=$db->prepare($query);
+         $res= $stmt->execute($querValues);
+        if($res==false){
+            throw new DatabaseException('Saving is failed');
+        }
     }
 
     public static function getTable()
@@ -60,7 +67,7 @@ abstract class ActiveRecord
     }
 
     /**
-     * update table
+     * update table, optimization security
      * @param $field
      * @param $fieldValue
      */
@@ -68,17 +75,21 @@ abstract class ActiveRecord
     {
         $fields = get_object_vars($this);
         $query = '';
+        $values=array();
         foreach ($fields as $col => $val) {
-            $query .= $col . '="' . $val . '", ';
+            $query .= $col . '=:' . $col . ', ';
+            $values[':'.$col]=$val;
         }
         $query = trim($query);
         $query = substr($query, 0, -1);
         $db = Service::get('db');
         $query = 'UPDATE `' . static::getTable() . '` SET ' . $query . ' WHERE ' . $field . '=:fieldValue';
         $stmt = $db->prepare($query);
-        $stmt->execute([':fieldValue' => $fieldValue]);
-
-
+        $values[':fieldValue']= $fieldValue;
+        $res=$stmt->execute($values);
+        if($res==false){
+            throw new DatabaseException('Update is failed');
+        }
     }
 
     /**

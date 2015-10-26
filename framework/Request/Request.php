@@ -71,13 +71,12 @@ class Request
         return NULL;
     }
 
-
     public function filter($method){
 
-
-            $result = $method;
-
-
+       // $result = addcslashes($method, '\'(){}[]"');
+        $result=$method;
+        //$result=strip_tags($method);
+        $result=htmlspecialchars($result, ENT_QUOTES);
         return $result;
     }
 }

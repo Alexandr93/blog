@@ -14,7 +14,7 @@ use Framework\Validation\Filter\NotBlank;
 
 class Post extends ActiveRecord
 {
-    public $id;
+
     public $title;
     public $content;
     public $date;

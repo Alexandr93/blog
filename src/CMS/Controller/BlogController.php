@@ -22,8 +22,7 @@ use Framework\Validation\Validator;
 class BlogController extends Controller
 {
     public function editAction($id){
-    $route=Service::get('route');
-//print_r(__DIR__);
+        $route=Service::get('route');
         $post = Post::find((int)$id);
         $session = Service::get('session');
         $user = $session->get('user');
@@ -38,19 +37,20 @@ class BlogController extends Controller
                         $post->date = $date->format('Y-m-d H:i:s');
                         $validator=new Validator($post);
                         if ($validator->isValid()) {
-                            $post->update('id', $id);
+                           $post->update('id', $id);
                             return $this->redirect($this->generateRoute('home'), 'The data has been update successfully');
                         } else {
                             $error = $validator->getErrors();
                         }
                     } catch (DatabaseException $e) {
                         $error = $e->getMessage();
+
                     }
 
                 }
 
             } else {
-                throw new SecurityException('You are not allowed posts adding', Service::get('route')->buildRoute('home'));
+                throw new SecurityException('You are not allowed posts updating', $this->getRequest()->getReferrer());
             }
         }else{
             throw new SecurityException('Please, login', $route->buildRoute('login'));

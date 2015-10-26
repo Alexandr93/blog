@@ -13,6 +13,6 @@ class NotBlank
 {
     public function check($param)
     {
-        return (strlen($param) == 0) ? ['error' => 'it must not be empty'] : true;
+        return (strlen($param) == 0) ? ['error' => ' field can not be empty'] : true;
     }
 }

@@ -20,7 +20,5 @@ class SecurityException extends \Exception
             $session->addFlushMessage('info', $msg);
             $resp = new ResponseRedirect($url, $code);
             $resp->send();
-            //return  $resp;
-
         }
 }

@@ -13,6 +13,8 @@ use Framework\Controller\Controller;
 use Framework\DI\Service;
 use Framework\Exception\SecurityException;
 use Framework\Exception\DatabaseException;
+use Framework\Renderer\Renderer;
+use Framework\Response\Response;
 
 class ProfileController extends Controller
 {
@@ -47,21 +49,23 @@ class ProfileController extends Controller
 
 
             } else {
-
+               // return $this->render('updateprofile.html', array('errors' => $errors));
                 return $this->getAction();
             }
         } else {
             throw new SecurityException('Please, login', $route->buildRoute('login'));
         }
-
+       // $renderer = new Renderer();
+       // return new Response($renderer->render(__DIR__ . '/../../Blog/views/Post/add.html.php', array('action' => $this->generateRoute('edit'), 'post' => isset($post)?$post:null, 'show'=>'check', 'errors' => isset($error)?$error:null)));
+        return $this->render('updateprofile.html', array('errors' => $errors));
     }
 
     public function getAction()
     {
 
 
-        $errors = array();
+        $user=Service::get('session')->get('user')->email;
 
-        return $this->render('updateprofile.html', array('errors' => $errors));
+        return $this->render('updateprofile.html', array('content'=>'It\'s personal pages', 'username'=>$user));
     }
 }
