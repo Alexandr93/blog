@@ -67,5 +67,15 @@ return array(
             '_method' => 'POST'
         )
 
+    ),
+    'delete_post'      => array(
+        'pattern'       => '/posts/{id}/delete',
+        'controller'    => 'CMS\\Controller\\BlogController',
+        'action'        => 'delete',
+        '_requirements' => array(
+            'id'      => '\d+',
+            '_method' => 'POST'
+        )
+
     )
 );

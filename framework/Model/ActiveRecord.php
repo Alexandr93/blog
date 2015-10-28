@@ -24,18 +24,18 @@ abstract class ActiveRecord
         $fields = get_object_vars($this);
         $columns = '';
         $values = '';
-        $querValues=array();
+        $queryValues=array();
         foreach ($fields as $col => $val) {
             $columns .= $col . ', ';
             $values .= ':' . $col . ', ';
-            $querValues[':'.$col]=$val;
+            $queryValues[':'.$col]=$val;
         }
         $columns = '(' . substr($columns, 0, -2) . ')';
         $values = '(' . substr($values, 0, -2) . ')';
         $db = Service::get('db');
         $query = 'INSERT INTO `' . static::getTable() . '` ' . $columns . ' VALUES ' . $values;
         $stmt=$db->prepare($query);
-         $res= $stmt->execute($querValues);
+         $res= $stmt->execute($queryValues);
         if($res==false){
             throw new DatabaseException('Saving is failed');
         }
@@ -106,5 +106,19 @@ abstract class ActiveRecord
         $stmt->execute([':email' => $email]);
         $result = $stmt->fetch(\PDO::FETCH_OBJ);
         return $result;
+    }
+
+    /**
+     * @param $field
+     * @param $fieldVal
+     */
+    public function delete($field, $fieldVal){
+        $db=Service::get('db');
+        $query = 'DELETE FROM `' . static::getTable() . '` WHERE '.$field.'='.$fieldVal;
+        $res=$db->query($query);
+        if($res==false){
+            throw new DatabaseException('Delete is failed');
+        }
+
     }
 }

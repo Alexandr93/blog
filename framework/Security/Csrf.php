@@ -12,6 +12,11 @@ use Framework\DI\Service;
 use Framework\Exception\SecurityException;
 class Csrf
 {
+    /**
+     * generate Csrf token
+     *
+     * @return string
+     */
     public function generateToken(){
 
         $session=Service::get('session');
@@ -45,8 +50,6 @@ class Csrf
     public function checkTokenValid(){
 
         if($this->checkToken()==false) {
-            $session = Service::get('session');
-            //$session->delete('token');
             throw new SecurityException('Invalid token, resend form ', $_SERVER['HTTP_REFERER']);
         }
     }

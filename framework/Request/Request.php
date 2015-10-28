@@ -49,7 +49,7 @@ class Request
     }
 
     public function getReferrer(){
-        return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : NULL;
+        return isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/';
     }
     public function get($param){
 
@@ -72,8 +72,6 @@ class Request
     }
 
     public function filter($method){
-
-       // $result = addcslashes($method, '\'(){}[]"');
         $result=$method;
         //$result=strip_tags($method);
         $result=htmlspecialchars($result, ENT_QUOTES);

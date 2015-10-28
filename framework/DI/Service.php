@@ -30,12 +30,22 @@ class Service
         return self::$instance;
     }
 
+    /**
+     * set new object
+     * @param $service_name
+     * @param $object
+     */
     public static function set($service_name, $object){
-
+    if(empty(self::$services[$service_name]))
         self::$services[$service_name]=$object;
 
     }
 
+    /**
+     * get object if exists
+     * @param $service_name
+     * @return mixed
+     */
     public static function get($service_name){
          if(array_key_exists($service_name, self::$services)){
              return self::$services[$service_name];

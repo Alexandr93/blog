@@ -27,30 +27,23 @@ class Loader{
         return self::$_instance;
     }
     /**
-     *  пустой метод __clone, закрываем доступ вне класса
+     *
      */
     private function __clone(){}
     /**
-     * добавление пути
-     * принимает на вход 2 параметра
-     * @param string $prefix строка со значением пространства имен
-     * @param string $base_dir хранит значение пути
+     * @param string $prefix
+     * @param string $base_dir
      * @param bool $prepend
      */
     public static function addNamespacePath($prefix, $base_dir, $prepend = false){
         {
-            // нормализуем префикс пространства имён
             $prefix = trim($prefix, '\\') . '\\';
 
-            // нормализуем базовую директорию так, чтобы всегда присутствовал разделитель в конце
             $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . '/';
 
-            // инициализируем массив префиксов пространства имён
             if (isset(self::$prefixes[$prefix]) === false) {
                 self::$prefixes[$prefix] = array();
             }
-
-            // сохраняем базовую директорию для префикса пространства имён
             if ($prepend) {
                 array_unshift(self::$prefixes[$prefix], $base_dir);
             } else {
@@ -97,9 +90,8 @@ class Loader{
                 . str_replace('\\', '/', $relative_class)
                 . '.php';
 
-            // если файл существует, загружаем его
             if (self::requireFile($file)) {
-                // ура, получилось
+
                 return $file;
             }
         }
@@ -107,9 +99,9 @@ class Loader{
     }
 
     /**
-     * Если файл существует, загружеаем его
-     * @param string $file файл для загрузки.
-     * @return bool true, если файл существует, false — если нет.
+     * If file exists load him
+     * @param string $file
+     * @return bool true
      */
     protected function requireFile($file)
     {
@@ -123,4 +115,3 @@ class Loader{
 }
 $loader=Loader::getInstance();
 $loader::addNamespacePath("Framework\\",__DIR__);
-//$loadFunction = '\Loader::loadClass';

@@ -14,6 +14,11 @@ class Security
 {
 
 
+    /**
+     * set user after login
+     *
+     * @param $user
+     */
     public function setUser($user){
         $session=Service::get('session');
         $session->set('isAuth', true);
@@ -22,10 +27,21 @@ class Security
 
 
     }
+
+    /**
+     * check authenticated
+     *
+     * @return bool
+     */
     public function isAuthenticated(){
        return Service::get('session')->get('isAuth')?true : false;
 
     }
+
+    /**
+     *clear session, delete user
+     *
+     */
     public function clear(){
         Service::get('session')->destroy();
     }
@@ -34,5 +50,3 @@ class Security
 //<iframe>
 //mimtype
 //htaccess remote handlers
-
-///токен проверка при POST запросе

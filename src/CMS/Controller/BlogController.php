@@ -58,4 +58,31 @@ class BlogController extends Controller
         $renderer = new Renderer();
         return new Response($renderer->render(__DIR__ . '/../../Blog/views/Post/add.html.php', array('action' => $this->generateRoute('edit'), 'post' => isset($post)?$post:null, 'show'=>'check', 'errors' => isset($error)?$error:null)));
     }
+    public function deleteAction($id){
+        $route=Service::get('route');
+        $session = Service::get('session');
+        $user = $session->get('user');
+        if (Service::get('security')->isAuthenticated()) {
+            if ($user->role == 'ROLE_ADMIN') {
+                if ($this->getRequest()->isPost()) {
+
+                        $post = new Post();
+                       // $post->delete('id', $id);
+                    echo 'asfa';
+                    return $this->redirect($this->generateRoute('home'), 'The post delete successfully');
+
+
+
+                }
+
+            } else {
+                throw new SecurityException('You are not allowed posts updating', $this->getRequest()->getReferrer());
+            }
+        }else{
+            throw new SecurityException('Please, login', $route->buildRoute('login'));
+        }
+
+
+
+    }
 }

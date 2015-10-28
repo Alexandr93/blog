@@ -15,6 +15,13 @@ class Renderer
 {
 
 
+    /**
+     * Create page
+     *
+     * @param $path_to_layout
+     * @param $content
+     * @return string
+     */
     public function render($path_to_layout, $content)
     {
 
@@ -52,7 +59,7 @@ class Renderer
         //костыль на отобжажение ссылки на редактирование поста, чтобы не менять стандартную вьюху show.html
         if (!empty($content['post']->id) && Service::get('security')->isAuthenticated() && empty($content['show'])) {
             echo '<br/><a href="/posts/' . $content['post']->id . '/edit"> Edit post</a>';
-
+            echo '<br/><a href="/posts/' . $content['post']->id . '/delete"> Delete post</a>';
         }
         return ob_get_clean();
     }

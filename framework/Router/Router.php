@@ -30,7 +30,10 @@ class Router
     }
 
 
-
+    /**
+     * @param $map_array
+     * @return mixed
+     */
     public function parseUri($map_array){
 
         $testUri=$this->uri;
@@ -58,13 +61,25 @@ class Router
 
 
     }
+
+    /**
+     * @return mixed
+     */
     public function getMethod(){
         return $this->method;
     }
+
+    /**
+     * @return mixed
+     */
     public function getSecurity(){
         return $this->security;
     }
 
+    /**
+     * @param $route
+     * @return null
+     */
     public function buildRoute($route){
        if(array_key_exists($route, $this->map)){
            $rout_params = $this->map[$route];

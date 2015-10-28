@@ -54,6 +54,9 @@ class Application
     }
 
 
+    /**
+     * @throws SecurityException
+     */
     public function run()
     {
         $route = Service::get('route');
@@ -83,7 +86,7 @@ class Application
                     if ($response instanceof ResponseInterface) {
                         if ($response->type == 'html') {
                             $content['content'] = $response->getContent();
-                            $content['flush'] = Service::get('session')->getFlushMessage();//нужно очищать
+                            $content['flush'] = Service::get('session')->getFlushMessage();
 
                             $renderer = new Renderer();
                             $response = new Response($renderer->render($this->config['main_layout'], $content));
@@ -99,16 +102,21 @@ class Application
             } else {
                 throw new HttpNotFoundException('Route not found', 404);
             }
-            $response->send();
+
         } catch (HttpNotFoundException $e) {
             $renderer = new Renderer();
             $response = new Response($renderer->render($this->config['error_500'],
-                array('message' => $e->getMessage() . ' on file: ' . $e->getFile() . ' at line: ' . $e->getLine(), 'code' => $e->getCode()
+                array('message' => $e->getMessage() , 'code' => $e->getCode()
                 ))
             );
-            $response->send();
-        }
+            $response= new Response($renderer->render($this->config['main_layout'], array('content'=>$response->getContent(), 'flush' => Service::get('session')->getFlushMessage())));
 
+        }
+        catch(DatabaseException $e){
+            $renderer = new Renderer();
+            $response = new Response($renderer->render($this->config['error_500'],   array('message' => $e->getMessage(), 'code'=>$e->getCode())));
+        }
+        $response->send();
     }
 
     /**
