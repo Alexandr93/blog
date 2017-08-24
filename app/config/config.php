@@ -14,4 +14,5 @@ return array(
         'user_class'  => 'Blog\\Model\\User',
         'login_route' => 'login'
     )
+    //i love you GIT
 );
