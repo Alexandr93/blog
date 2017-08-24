@@ -8,7 +8,7 @@ return array(
     'pdo'         => array(
         'dns'      => 'mysql:dbname=education;host=localhost',
         'user'     => 'root',
-        'password' => ''
+        'password' => 'shuralord1'
     ),//правлены для работоспособности
     'security'    => array(
         'user_class'  => 'Blog\\Model\\User',
